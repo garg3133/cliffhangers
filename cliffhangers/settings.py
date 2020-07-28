@@ -40,8 +40,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+    'rest_framework.authtoken',
+
     'home',
+    'accounts',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,6 +142,22 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+AUTH_USER_MODEL = 'accounts.User'
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = (config("EMAIL_USE_TLS") == 'True')
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = int(config("EMAIL_PORT"))
+
+DEFAULT_FROM_EMAIL = config("SENDER_EMAIL")
+ADMINS_EMAIL = ast.literal_eval(config("ADMINS_EMAIL"))
 
 
 # Static files (CSS, JavaScript, Images)

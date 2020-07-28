@@ -5,7 +5,7 @@ from django.db import models
 class Road(models.Model):
     road_id = models.CharField(max_length=50, unique=True)
     pci = models.IntegerField(verbose_name='Pavement Condition Index')
-    location = models.CharField()
+    location = models.CharField(max_length=255)
 
     def __str__(self):
         return self.road_id
@@ -23,7 +23,7 @@ class Image(models.Model):
 
 class Issue(models.Model):
     issue_id = models.CharField(max_length=50, unique=True)  # For ordering and grouping
-    name = models.CharField()
+    name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
