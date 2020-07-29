@@ -1,0 +1,17 @@
+{% autoescape off %}
+A new User has signed up. The details are as follows:<br>
+<br>
+Email: {{ user.email }}<br>
+Name: {{ user.get_full_name }}<br>
+Contact No.: {{ user.contact_no }}<br>
+<br>
+<b>Role: {{ user.get_role_display }}</b><br>
+<br>
+To verify the account, click on the link below...<br>
+<br>
+http://{{ domain }}{% url 'accounts:account_authentication' uidb64=uid token=token %}<br>
+<br>
+<br>
+Regards,<br>
+Ministry of Rural Development
+{% endautoescape %}

@@ -1,0 +1,11 @@
+{% autoescape off %}
+Hi {{ user.get_short_name }},<br>
+<br>
+Your account has been successfully authenticated by our admin. You can now log into your account..<br>
+<br>
+http://{{ domain }}{% url 'accounts:login' %}<br>
+<br>
+<br>
+Regards,<br>
+Ministry of Rural Development
+{% endautoescape %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="registration" style="padding-top: 150px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class=" col-10 col-md-8 col-lg-6 col-xl-5 form-container">
+                <form method="post" class="signup-form">
+                    {% csrf_token %}
+                    <h1>Sign up</h1>
+                    <span id="login-form-info">{{ error }}</span>
+                    <input type="email" name="email" placeholder="Email" required />
+                    <input type="password" name="password1" placeholder="Password" required />
+                    <input type="password" name="password2" placeholder="Confirm Password" required />
+                    <button type="submit" name="submit" value="login">Sign Up</button>
+                    <p>Already have an account? <a href="{% url 'accounts:login' %}" style="color: crimson;">Sign in.</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

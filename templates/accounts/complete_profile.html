@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="registration" style="padding-top: 150px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class=" col-10 col-md-8 col-lg-6 col-xl-5 form-container">
+                <form method="post" class="complete-profile-form">
+                    {% csrf_token %}
+                    <h1>Complete profile</h1>
+                    <span id="login-form-info">{{ error }}</span>
+                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First Name" required />
+                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Last Name" required />
+                    <input type="tel" name="contact_no" id="contact_no" class="form-control" placeholder="Contact Number"
+                        minlength="10" maxlength="13" required />
+                    <select name="role" class="custom-select" id="role" required>
+                        <option value="">Select Role</option>
+                        {% for role_id, role in roles %}
+                        <option value="{{ role_id }}">{{ role }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" name="submit" value="login">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- <script>
+    function form_validation(){
+        if ($('#role').value === ''){
+            $('#login-form-info').html('Please select a role.')
+            return false;
+        }
+    }
+</script> -->
+{% endblock %}
