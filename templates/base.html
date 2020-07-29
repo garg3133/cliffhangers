@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href='{% static "logo.png" %}'>
+    <title>{% block title %} SIH - MK199 {% endblock %} </title>
+
+    <style>
+        .main{
+            min-height: 100vh;
+        }
+    </style>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="{% static 'vendor/css/fontawesome-all.min.css' %}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+
+    {% block style %}
+    {% endblock %}
+
+</head>
+<body>
+
+    <div class="main">
+        {% block header %}
+		<div id="main-menu" class="navbar navbar-expand-lg fixed-top navbar-dark"
+        		style="padding: 0; background-color: rgb(27, 26, 26);" role="navigation">
+			<div class="container">
+				<a class="navbar-brand" href="{% url 'home:index' %}">
+					<img class="navbar-logo" src='{% static "logo.png" %}' alt="Logo">
+					<h4 class="navbar-title">SIH <br><span>MK-199</span></h4>
+				</a>
+				<button type="button" class="navbar-toggler custom-toggler" data-toggle="collapse" data-target="#collapsibleNavbar"
+						aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<i class="fas fa-bars"></i>
+				</button>
+
+				<nav class="collapse navbar-collapse" id="collapsibleNavbar" style="justify-content: flex-end;">
+					<ul class="navbar-nav text-uppercase mb-3 mb-lg-0">
+						{% block navbar-links %}
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'home:index' %}">Home</a>
+						</li>
+						{% endblock %}
+						{% if user.is_authenticated %}
+						<!-- <li class="nav-item">
+							<a class="nav-link px-3 px-lg-2" href="{% url 'accounts:complete_profile' %}" style="/*white-space: nowrap;*/">Profile</a>
+						</li> -->
+						<li class="nav-item align-self-center w-100 mt-2 mt-lg-0">
+							<a class="nav-button btn btn-danger px-3 ml-3" href="{% url 'accounts:logout' %}"> Logout</a>
+						</li>
+						{% else %}
+						<li class="nav-item align-self-center w-100 mt-2 mt-lg-0">
+							<a class="nav-button btn btn-danger px-3 ml-3" href="{% url 'accounts:login' %}"> Login</a>
+						</li>
+						{% endif %}
+					</ul>
+				</nav>
+			</div>
+		</div>
+		{% endblock %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% include 'snippets/footer.html' %}
+
+    {% block bootstrap_scripts %}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    {% endblock %}
+
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+</html>

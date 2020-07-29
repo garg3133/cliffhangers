@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Room Slot Booking {% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<section id="home" class="flex height-fix">
+    <div id="pt" class="canvas"></div>
+    <div class="flex">
+        <div class="text">
+            <div class="highlight">SIH 2020</div>
+            Ministry of Rural Development
+            <div style="font-family: auto;">MK-199</div>
+        </div>
+    </div>
+</section>
+{% endblock %}
