@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<section id="roads" style="margin-top: 150px;">
+    <div class="container">
+        <h1 class="text-center mb-5">Select Road</h1>
+        <form method="GET">
+            <div class="row">
+                <div class="col-4">
+                    <label for="state">State</label>
+                    <select name="state" class="custom-select d-block w-100" id="state" required>
+                        <option value="">Select State</option>
+                        {% for state in states %}
+                        <option value="{{ state }}" {% if state == selected_state %}selected{% endif %}>{{ state }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label for="district">District</label>
+                    <select name="district" class="custom-select d-block w-100" id="district" required>
+                        <option value="">Select District</option>
+                        {% if districts %}
+                            {% for district in districts %}
+                                <option value="{{ district }}" {% if district == selected_district %}selected{% endif %}>{{ district }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label for="block">Block</label>
+                    <select name="block" class="custom-select d-block w-100" id="block" required>
+                        <option value="">Select Block</option>
+                        {% if blocks %}
+                            {% for block in blocks %}
+                                <option value="{{ block }}" {% if block == selected_block %}selected{% endif %}>{{ block }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <div class="row justify-content-center my-4">
+                <div class="col-md-4">
+                    <button id="show_roads" class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+        {% if roads %}
+        <div class="row">
+            {% for road in roads %}
+            <div class="col-md-4">
+                Hello
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+
+<!-- AJAX for State Change -->
+
+<script>
+    $("#state").change(function () {
+        let state = $(this).val();
+
+        $.ajax({
+            url: "{% url 'home:ajax_state_changed' %}",
+            data: {
+                'state': state,
+            },
+            dataType: 'json',
+            success: function (data) {
+                let selected = '';
+                let options = '<option value="">Select District</option>';
+
+                Object.entries(data).forEach(([key, value]) => {
+                    // if(key == "{{selected_section}}") selected = 'selected';
+                    // else selected = '';
+                    options += '<option value="' + key + '"' + selected + '>' + value + '</option>';
+                });
+                $("#district").html(options);
+
+                options = '<option value="">Select Block</option>';
+                $('#block').html(options)
+            }
+        });
+    });
+</script>
+
+<!-- AJAX for District Change -->
+
+<script>
+    $("#district").change(function () {
+        let state = $('#state').children('option:selected').val();
+        let district = $(this).val();
+
+        $.ajax({
+            url: "{% url 'home:ajax_district_changed' %}",
+            data: {
+                'state': state,
+                'district': district,
+            },
+            dataType: 'json',
+            success: function (data) {
+                let selected = '';
+                let options = '<option value="">Select Block</option>';
+
+                Object.entries(data).forEach(([key, value]) => {
+                    // if(key == "{{selected_section}}") selected = 'selected';
+                    // else selected = '';
+                    options += '<option value="' + key + '"' + selected + '>' + value + '</option>';
+                });
+                $('#block').html(options)
+            }
+        });
+    });
+</script>
+
+{% endblock %}
