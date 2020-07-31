@@ -1,19 +1,30 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
 class Road(models.Model):
-    road_id = models.CharField(max_length=50, unique=True)
-    pci = models.IntegerField(verbose_name='Pavement Condition Index')
-    location = models.CharField(max_length=255)
+    road_id = models.CharField(max_length=255, unique=True)
+    pci = models.IntegerField(verbose_name='Pavement Condition Index', null=True, blank=True)
+    block = models.CharField(max_length=255)
+    district = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    total_images = models.IntegerField(null=True, blank=True)
+    slug = models.SlugField(blank=True)
 
     def __str__(self):
         return self.road_id
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.road_id)
+        super(Road, self).save(*args, **kwargs)
+
 class Image(models.Model):
     road = models.ForeignKey(Road, on_delete=models.CASCADE, related_name='images')
     image_id = models.CharField(max_length=50)
-    # image = models.ImageField()
+    image = models.ImageField(upload_to='road_images', null=True, blank=True)
+    village = models.CharField(max_length=255, blank=True)
+    habitation = models.CharField(max_length=255, blank=True)
 
     class Meta:
         unique_together = (('road', 'image_id'),)

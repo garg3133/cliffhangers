@@ -5,9 +5,9 @@ from .models import Road, Image, Issue, IssueDetail
 # Register your models here.
 @admin.register(Road)
 class Roadadmin(admin.ModelAdmin):
-    list_display = ('road_id', 'pci', 'location')
-    search_fields = ('road_id', 'location')
-    ordering = ('road_id',)
+    list_display = ('road_id', 'pci', 'state', 'district', 'block')
+    search_fields = ('road_id', 'state', 'district', 'block')
+    ordering = ('state', 'district', 'block', 'road_id',)
 
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
