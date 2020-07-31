@@ -50,7 +50,12 @@
         <div class="row">
             {% for road in roads %}
             <div class="col-md-4">
-                Hello
+                <div class="card shadow-sm">
+                    <div class="card-body p-3">
+                        <h5 class="card-title font-weight-bolder text-center my-2">{{ road.road_id }}</h5>
+                    </div>
+                    <a href="{% url 'home:road_details' road.slug %}" class="stretched-link"></a>
+                </div>
             </div>
             {% endfor %}
         </div>
