@@ -5,7 +5,7 @@ app_name = 'home'
 urlpatterns = [
     path('', views.index, name='index'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('road_details/<str:slug>', views.road_details, name='road_details'),
+    path('road_details/<str:slug>/', views.road_details, name='road_details'),
 
     # AJAX
     path('ajax_state_changed/', views.ajax_state_changed, name='ajax_state_changed'),

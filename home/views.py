@@ -47,7 +47,11 @@ def dashboard(request):
 
 @login_required
 def road_details(request, slug):
-    return render(request, 'home/road_details.html')
+    road = get_object_or_404(Road, slug=slug)
+    context = {
+        'road': road,
+    }
+    return render(request, 'home/road_details.html', context)
 
 def ajax_state_changed(request):
     state = request.GET.get('state', None)
