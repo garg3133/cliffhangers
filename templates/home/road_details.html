@@ -33,7 +33,7 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{ image.image_id }}</td>
                         <td>{{ image.issues.count }}</td>
-                        <td>{{ image.quality }}</td>
+                        <td>{{ image.get_quality_display }}</td>
                     </tr>
                     
                     <tr>
