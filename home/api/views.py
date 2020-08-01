@@ -81,9 +81,18 @@ def update_road_image(request):
 @permission_classes([])
 @authentication_classes([])
 def update_road_pci(request):
-    data = request.data
+    data = {}
 
-    road_data = data.pop(road)
-    print(road_data)
+    road_id = request.data['road_id']
+    pci = int(request.data['pci'])
+    print(type(pci))
+    road = Road.objects.filter(road_id=road_id).first()
+    if road:
+        road.pci = pci
+        road.save()
+        data['response'] = 'Success'
+        return Response(data, status=200)
+    else:
+        data['response'] = 'Error'
 
-    return Response({})
+        return Response(data, status=201)
