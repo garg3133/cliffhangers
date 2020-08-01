@@ -23,9 +23,9 @@ class Image(models.Model):
     QUALITY = (
         (1, 'Very Poor'),
         (2, 'Poor'),
-        (3, 'Satisfactory'),
-        (4, 'Good'),
-        (5, 'Excellent'),
+        (3, 'Fair'),
+        (4, 'Satisfactory'),
+        (5, 'Good'),
     )
 
     road = models.ForeignKey(Road, on_delete=models.CASCADE, related_name='images')
