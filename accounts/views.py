@@ -92,7 +92,7 @@ def signup_view(request):
 
         from_email = settings.DEFAULT_FROM_EMAIL
         to = [email]
-        subject = '[noreply] Jagrati Acount Activation'
+        subject = '[noreply] Acount Activation'
         html_message = render_to_string('accounts/email/account_activation_email.html', {
             'user': user,
             'domain': current_site.domain,
