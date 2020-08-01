@@ -20,9 +20,18 @@ class Road(models.Model):
         super(Road, self).save(*args, **kwargs)
 
 class Image(models.Model):
+    QUALITY = (
+        (1, 'Very Poor'),
+        (2, 'Poor'),
+        (3, 'Satisfactory'),
+        (4, 'Good'),
+        (5, 'Excellent'),
+    )
+
     road = models.ForeignKey(Road, on_delete=models.CASCADE, related_name='images')
     image_id = models.CharField(max_length=50)
     image = models.ImageField(upload_to='road_images', null=True, blank=True)
+    quality = models.CharField(max_length=50)
     village = models.CharField(max_length=255, blank=True)
     habitation = models.CharField(max_length=255, blank=True)
 
@@ -43,7 +52,7 @@ class IssueDetail(models.Model):
     image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='issues')
     issue = models.ForeignKey(Issue, on_delete=models.PROTECT, related_name='details')
     count = models.IntegerField()
-    quality = models.IntegerField()  # On a scale of 1-10
+    quality = models.IntegerField(choices=Image.QUALITY)  # On a scale of 1-10?? Currently 1-5
 
     class Meta:
         unique_together = (('image', 'issue'),)
