@@ -7,6 +7,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('accounts/', include('accounts.urls')),
+
+    # Rest API URLs
+    path('api/', include('home.api.urls')),
 ]
 
 if settings.DEBUG:
