@@ -31,7 +31,7 @@ class Image(models.Model):
     road = models.ForeignKey(Road, on_delete=models.CASCADE, related_name='images')
     image_id = models.CharField(max_length=50)
     image = models.ImageField(upload_to='road_images', null=True, blank=True)
-    quality = models.CharField(max_length=50)
+    quality = models.IntegerField(choices=QUALITY, null=True, blank=True)
     village = models.CharField(max_length=255, blank=True)
     habitation = models.CharField(max_length=255, blank=True)
 
@@ -52,7 +52,7 @@ class IssueDetail(models.Model):
     image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='issues')
     issue = models.ForeignKey(Issue, on_delete=models.PROTECT, related_name='details')
     count = models.IntegerField()
-    quality = models.IntegerField(choices=Image.QUALITY)  # On a scale of 1-10?? Currently 1-5
+    quality = models.IntegerField(choices=Image.QUALITY, null=True, blank=True)  # On a scale of 1-10?? Currently 1-5
 
     class Meta:
         unique_together = (('image', 'issue'),)
