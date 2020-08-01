@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container pt-3" style="margin-top: 150px;">
+	<div class="text-center mt-4 p-0 p-sm-3" style="margin: auto; max-width: 500px;">
+		<img src="{% static 'icon/404.png' %}" alt="">
+		<h1 class="mt-3 font-weight-bolder">Page Not Found</h1>
+		<a class="mt-3" href="{% url 'home:index' %}">Back to homepage</a>
+	</div>
+</div>
+{% endblock %}
