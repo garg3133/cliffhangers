@@ -1,0 +1,38 @@
+item {
+  id: 1
+  name: 'Longitudinal_crack'
+}
+item {
+  id: 2
+  name: 'Transverse_crack'
+}
+item {
+  id: 3
+  name: 'Aligator_crack'
+}
+item {
+  id: 4
+  name: 'Pothole'
+}
+item {
+  id: 5
+  name: 'Background'
+}
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
