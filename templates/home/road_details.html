@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block style %}
+<style>
+    .collapsible-row {
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section id="road_details" style="margin-top: 150px;">
+    <div class="container">
+        <h2 class="text-center mb-5">{{ road.road_id }}</h2>
+        {% if road.images.all %}
+        <div id="accordion">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>SR No.</th>
+                        <th>Image ID</th>
+                        <th>Issues Found</th>
+                        <th>Average Quality</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for image in road.images.all %}
+                    <tr class="collapsible-row" data-target="#image{{ image.image_id }}" data-toggle="collapse" aria-expanded="true" aria-controls="image{{ image.image_id }}">
+                        <td><i class="fas fa-chevron-down"></i></td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ image.image_id }}</td>
+                        <td>{{ image.issues.count }}</td>
+                        <td>{{ image.quality }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="p-0" colspan="5">
+                            <div id="image{{ image.image_id }}" class="collapse bg-light px-4" aria-labelledby="headingOne" data-parent="#accordion">
+                                {% if image.issues.all %}
+                                <table class="table m-0">
+                                    <tr>
+                                        <th>SR No.</th>
+                                        <th>Issue</th>
+                                        <th>Count</th>
+                                        <th>Quality</th>
+                                    </tr>
+                                    {% for issue_detail in image.issues.all %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ issue_detail.issue.name }}</td>
+                                        <td>{{ issue_detail.count }}</td>
+                                        <td>{{ issue_detail.get_quality_display }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                                {% else %}
+                                <p class="py-3 m-0">No issues found</p>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center">No Images available</div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $('.collapse').on('show.bs.collapse', function () {
+            collapse_id = $(this)[0].id
+            selector = '[data-target = "#' + collapse_id + '"] i'
+            $(selector).removeClass('fa-chevron-down').addClass('fa-chevron-up');
+        });
+
+        $('.collapse').on('hide.bs.collapse', function () {
+            collapse_id = $(this)[0].id
+            selector = '[data-target = "#' + collapse_id + '"] i'
+            $(selector).removeClass('fa-chevron-up').addClass('fa-chevron-down');
+        });
+    });
+</script>
+{% endblock %}
