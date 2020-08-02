@@ -14,13 +14,15 @@
 <section id="road_details" style="margin-top: 150px;">
     <div class="container">
         <h2 class="text-center mb-5">{{ road.road_id }}</h2>
+
+        {% if road.total_images and road.images.count != road.total_images %}
+        <div class="text-center mb-4 mt-n5 pt-3">
+            <div class="loader d-inline-block"></div>
+            <p class="d-inline-block" style="vertical-align: top;"> {{ road.images.count }}/{{ road.total_images }} images processed</p>
+        </div>
+        {% endif %}
+        
         {% if road.images.all %}
-            {% if road.images.count != road.total_images %}
-            <div class="text-center mb-4 mt-n5 pt-3">
-                <div class="loader d-inline-block"></div>
-                <p class="d-inline-block" style="vertical-align: top;"> {{ road.images.count }}/{{ road.total_images }} images processed</p>
-            </div>
-            {% endif %}
         <div id="accordion">
             <table class="table table-hover">
                 <thead>
@@ -96,7 +98,7 @@
     });
 </script>
 <script>
-    if ("{{ road.total_images }}" != "{{ road.images.count }}") {
+    if ("{{ road.total_images }}" != 0 && "{{ road.total_images }}" != "{{ road.images.count }}") {
         setTimeout(function(){
             location.reload()
         }, 5000)
