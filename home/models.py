@@ -26,7 +26,7 @@ class Road(models.Model):
 
 class Image(models.Model):
     QUALITY = (
-        (1, 'Very Poor'),
+        (1, 'Severe'),
         (2, 'Poor'),
         (3, 'Fair'),
         (4, 'Satisfactory'),
