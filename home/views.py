@@ -55,7 +55,10 @@ def dashboard(request):
 
 @login_required
 def road_details(request, slug):
-    road = get_object_or_404(Road, slug=slug)
+    if request.user.role == 'min':
+        road = get_object_or_404(Road, slug=slug)
+    else:
+        road = get_object_or_404(Road, slug=slug, assigned_to=request.user)
     context = {
         'road': road,
     }
