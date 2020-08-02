@@ -46,8 +46,10 @@ def create_road(request):
 def update_road_image(request):
     data = {}
     image_data = request.data
+    print(request.data)
+    print(image_data['issues'], type(image_data['issues']))
     issues = ast.literal_eval(image_data['issues'])
-
+    print(issues, type(issues))
     road_id = image_data['road_id']
     road = Road.objects.filter(road_id=road_id).first()
     if road and not Image.objects.filter(road=road, image_id=image_data['image_id']).exists():
@@ -57,15 +59,15 @@ def update_road_image(request):
             data['response'] = 'Success'
             print(issues)
             for issue in issues:
-                issue_name = issue['issue_name']
+                issue_id = issue['issue_id']
                 count = issue['count']
                 quality = issue['quality']
 
-                issue_obj = Issue.objects.filter(name=issue_name)
+                issue_obj = Issue.objects.filter(issue_id=issue_id)
                 if issue_obj.exists():
                     issue_obj = issue_obj[0]
                 else:
-                    issue_obj = Issue.objects.create(issue_id=issue_name, name=issue_name)
+                    issue_obj = Issue.objects.create(issue_id=issue_id, name=issue_id)
 
                 IssueDetail.objects.create(image=image, issue=issue_obj, count=count, quality=quality)
 
