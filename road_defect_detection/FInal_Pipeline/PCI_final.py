@@ -8,6 +8,7 @@ import zipfile
 
 from collections import defaultdict
 from io import StringIO
+import matplotlib
 from matplotlib import pyplot as plt
 from PIL import Image
 import cv2
@@ -54,9 +55,9 @@ def load_image_into_numpy_array(image):
     return np.array(image.getdata()).reshape((im_height, im_width, 3)).astype(np.uint8)
 
 # Making list of all images in folder
-ALL_IMAGES = os.listdir(PATH_TO_TEST_IMAGES_DIR)
+# ALL_IMAGES = os.listdir(PATH_TO_TEST_IMAGES_DIR)
 
-TEST_IMAGE_PATHS = [os.path.join(PATH_TO_TEST_IMAGES_DIR, FILE) for FILE in ALL_IMAGES]
+# TEST_IMAGE_PATHS = [os.path.join(PATH_TO_TEST_IMAGES_DIR, FILE) for FILE in ALL_IMAGES]
 
 def detectObjectFromPathList(TEST_IMAGE_PATHS):
     finalBoxes = []
@@ -300,9 +301,63 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
                 result = {
                     'image': image_np,
                     'quality': image_qual,
-                    'issues': issues
+                    'issues': str(issues)
                 }
-                print(result)
-                # return result
+                # print(result)
+                return result
 
-detectObjectFromPathList(TEST_IMAGE_PATHS)
+# detectObjectFromPathList(['./images_test\\1003.png', './images_test\\1003.png', './images_test\\1004.jpg'])
+
+CREATE_ROAD_URL = 'http://localhost:8000/api/create_road/'
+UPDATE_IMAGE_URL = 'http://localhost:8000/api/update_road_image/'
+
+PATH_TO_UNTESTED_ROAD_DIR = './road_images/untested/'
+
+# Size, in inches, of the output images.
+IMAGE_SIZE = (8,8)
+
+# Loop through all folders containing Road Images
+for folder in os.listdir(PATH_TO_UNTESTED_ROAD_DIR):
+    FOLDER_PATH = os.path.join(PATH_TO_UNTESTED_ROAD_DIR, folder)
+    IMAGES_PATH = os.path.join(FOLDER_PATH, 'images')
+    RESULT_IMAGES_PATH = os.path.join(FOLDER_PATH, 'results')
+
+    # Read Road JSON
+    ROAD_JSON_PATH = os.path.join(FOLDER_PATH, 'road.json')
+    road_json_file = open(ROAD_JSON_PATH, "r")
+    road_json = json.load(road_json_file)
+    road_json_file.close()
+
+    # Calculate total images
+    images_list = os.listdir(IMAGES_PATH)
+    image_jsons_num = len(images_list)
+    road_json['total_images'] = image_jsons_num
+    print(image_jsons_num, images_list)
+
+    r = requests.post(CREATE_ROAD_URL, data=road_json)
+    print(r.text)
+
+    # Test Images
+    for image in images_list:
+        IMAGE_PATH = glob.glob(os.path.join(IMAGES_PATH, image))
+
+        result = detectObjectFromPathList(IMAGE_PATH)
+
+        result_image = result['image']
+
+        result_image_path = os.path.join(RESULT_IMAGES_PATH, image)
+        matplotlib.image.imsave(result_image_path, result_image)
+
+        files = {'image': open(result_image_path, 'rb')}
+
+        print(image.split('.')[0])
+        image_json = {
+            'image_id': image.split('.')[0],
+            'road_id': road_json['road_id'],
+            'quality': result['quality'],
+            'issues': result['issues'],
+        }
+        print(image_json)
+
+        r = requests.post(UPDATE_IMAGE_URL, data=image_json, files=files)
+        print(r.text)
