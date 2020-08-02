@@ -15,6 +15,7 @@ class Road(models.Model):
     assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
                                     limit_choices_to={'role': 'con'}, related_name='assigned_roads')
     slug = models.SlugField(blank=True)
+    last_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.road_id
