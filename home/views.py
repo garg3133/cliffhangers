@@ -17,7 +17,7 @@ def dashboard(request):
         district = request.GET.get('district', None)
         block = request.GET.get('block', None)
 
-        roads = Road.objects.all()
+        roads = Road.objects.all().order_by('-last_modified')
         states = roads.values_list('state', flat=True).distinct().order_by('state')
 
         if state and district and block:
