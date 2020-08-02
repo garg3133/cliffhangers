@@ -1,4 +1,4 @@
-package com.example.coola.customobjectdetector;
+package com.example.coola.sih2020;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,11 +10,13 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.widget.Toast;
 
-import com.example.coola.customobjectdetector.detector_tflite.Classifier;
-import com.example.coola.customobjectdetector.detector_tflite.TFLiteObjectDetectionAPIModel;
+import com.example.coola.sih2020.detector_tflite.Classifier;
+import com.example.coola.sih2020.detector_tflite.TFLiteObjectDetectionAPIModel;
 
 import java.io.IOException;
 import java.util.List;
+
+import im.delight.android.location.SimpleLocation;
 
 public class DetectorFunction {
 
@@ -31,10 +33,12 @@ public class DetectorFunction {
     private Context context;
     //-----------------------------------------------------------------------------------------------
 
+    SimpleLocation location;
 
-    public DetectorFunction(Context mContext) {
+    public DetectorFunction(Context mContext, SimpleLocation loc) {
         context = mContext;
         initializeDetectionFunction();
+        location = loc;
     }
 
     // rotate bitmap at given angle
@@ -66,7 +70,7 @@ public class DetectorFunction {
     }
 
 
-    public Bitmap processImage(Bitmap inputBitmap,boolean turnOnToastMsg) {
+    public Report processImage(Bitmap inputBitmap, boolean turnOnToastMsg) {
 
 //        Bitmap inputBitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
 
@@ -94,9 +98,16 @@ public class DetectorFunction {
         paint2.setStyle(Paint.Style.FILL_AND_STROKE);
         paint2.setStrokeWidth(2.0f);
 
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
 
-        StringBuffer strBuf = new StringBuffer(" ----Detector Result----\n");
+        StringBuffer strBuf = new StringBuffer("Meta-Data \n");
 
+        strBuf.append("Latitude :-" + latitude +"\n");
+        strBuf.append("Longitude :-" + longitude + "\n");
+
+
+        strBuf.append("----Detector Result----");
 
         strBuf.append("\n");
 
@@ -128,7 +139,11 @@ public class DetectorFunction {
             showMessage(strBuf.toString());
         }
 
-        return resizedBitmap;
+        Report report = new Report(strBuf.toString(),resizedBitmap);
+
+
+
+        return report;
 
     }
 
