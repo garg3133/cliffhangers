@@ -5,7 +5,7 @@ from home.models import Road, Image, IssueDetail
 class CreateRoadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Road
-        fields = ['road_id', 'pci', 'district', 'state', 'total_images']
+        fields = ['road_id', 'pci', 'block', 'district', 'state', 'total_images']
 
 class CreateImageSerializer(serializers.ModelSerializer):
     class Meta:
