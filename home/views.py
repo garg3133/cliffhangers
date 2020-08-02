@@ -12,38 +12,46 @@ def index(request):
 
 @login_required
 def dashboard(request):
-    state = request.GET.get('state', None)
-    district = request.GET.get('district', None)
-    block = request.GET.get('block', None)
+    if request.user.role == 'min':
+        state = request.GET.get('state', None)
+        district = request.GET.get('district', None)
+        block = request.GET.get('block', None)
 
-    roads = Road.objects.all()
-    states = roads.values_list('state', flat=True).distinct().order_by('state')
+        roads = Road.objects.all()
+        states = roads.values_list('state', flat=True).distinct().order_by('state')
 
-    if state and district and block:
-        roads = roads.filter(state=state)
-        districts = roads.values_list('district', flat=True).distinct().order_by('district')
-        roads = roads.filter(district=district)
-        blocks = roads.values_list('block', flat=True).distinct().order_by('block')
-        roads = roads.filter(block=block)
-        if roads.exists():
-            context = {
-                'states': states,
-                'districts': districts,
-                'blocks': blocks,
-                'roads': roads,
+        if state and district and block:
+            roads = roads.filter(state=state)
+            districts = roads.values_list('district', flat=True).distinct().order_by('district')
+            roads = roads.filter(district=district)
+            blocks = roads.values_list('block', flat=True).distinct().order_by('block')
+            roads = roads.filter(block=block)
+            if roads.exists():
+                context = {
+                    'states': states,
+                    'districts': districts,
+                    'blocks': blocks,
+                    'roads': roads,
 
-                'selected_state': state,
-                'selected_district': district,
-                'selected_block': block,
-            }
-            return render(request, 'home/dashboard.html', context)
-        else:
-            return redirect('home:dashboard')
+                    'selected_state': state,
+                    'selected_district': district,
+                    'selected_block': block,
+                }
+                return render(request, 'home/dashboard.html', context)
+            else:
+                return redirect('home:dashboard')
 
-    context = {
-        'states': states,
-    }
-    return render(request, 'home/dashboard.html', context)
+        context = {
+            'states': states,
+        }
+        return render(request, 'home/dashboard.html', context)
+    else:
+        roads = request.user.assigned_roads.all()
+        context = {
+            'roads': roads,
+        }
+        return render(request, 'home/dashboard.html', context)
+    
 
 @login_required
 def road_details(request, slug):

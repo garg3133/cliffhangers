@@ -1,6 +1,8 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from accounts.models import User
+
 # Create your models here.
 
 class Road(models.Model):
@@ -10,6 +12,8 @@ class Road(models.Model):
     district = models.CharField(max_length=255)
     state = models.CharField(max_length=255)
     total_images = models.IntegerField(null=True, blank=True)
+    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,
+                                    limit_choices_to={'role': 'con'}, related_name='assigned_roads')
     slug = models.SlugField(blank=True)
 
     def __str__(self):
