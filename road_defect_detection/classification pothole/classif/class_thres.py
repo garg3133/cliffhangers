@@ -2,10 +2,13 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
+dim = (200,200)
 img_real_1 = cv2.imread("l1.jpg")
 img_r_1 = cv2.imread("l1.jpg",cv2.IMREAD_GRAYSCALE)
+img_real_1 = cv2.resize(img_real_1, dim, interpolation = cv2.INTER_AREA)
+img_r_1 = cv2.resize(img_r_1, dim, interpolation = cv2.INTER_AREA)
 img_1 = cv2.GaussianBlur(img_r_1,(5,5),0)
-#img_1 = cv2.GaussianBlur(img_1,(3,3),0)
+
 
 lap_1 = cv2.Laplacian(img_1, cv2.CV_64F, ksize=5)
 lap_1 = np.uint8(np.absolute(lap_1))
@@ -13,8 +16,10 @@ _, mask_1 = cv2.threshold(lap_1, 100,255, cv2.THRESH_BINARY)
 
 img_real_2 = cv2.imread("l2.jpg")
 img_r_2 = cv2.imread("l2.jpg",cv2.IMREAD_GRAYSCALE)
+img_real_2 = cv2.resize(img_real_2, dim, interpolation = cv2.INTER_AREA)
+img_r_2 = cv2.resize(img_r_2, dim, interpolation = cv2.INTER_AREA)
 img_2 = cv2.GaussianBlur(img_r_2,(5,5),0)
-#img_2 = cv2.GaussianBlur(img_2,(3,3),0)
+
 
 lap_2 = cv2.Laplacian(img_2, cv2.CV_64F, ksize=5)
 lap_2 = np.uint8(np.absolute(lap_2))
@@ -22,7 +27,8 @@ _, mask_2 = cv2.threshold(lap_2, 100,255, cv2.THRESH_BINARY)
 
 img_real_3 = cv2.imread("l3.jpg")
 img_r_3 = cv2.imread("l3.jpg",cv2.IMREAD_GRAYSCALE)
-#img_3 = cv2.GaussianBlur(img_r_3,(3,3),0)
+img_real_3 = cv2.resize(img_real_3, dim, interpolation = cv2.INTER_AREA)
+img_r_3 = cv2.resize(img_r_3, dim, interpolation = cv2.INTER_AREA)
 img_3 = cv2.GaussianBlur(img_r_3,(5,5),0)
 
 
