@@ -170,10 +170,13 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
 
                                         if ratio > 0.1:
                                             val = "Large_Longitudinal_Crack"
+                                            lc_qual = 1
                                         if ratio < 0.1 and ratio > 0.009:
                                             val = "Medium_Longitudinal_Crack"
+                                            lc_qual = 2
                                         if ratio<0.009:
                                             val = "Small_Longitudinal_Crack"
+                                            lc_qual = 3
 
                                 if int(classes_len[counter])==2:
                                         img_r_1 = cv2.cvtColor(img_sh, cv2.COLOR_BGR2GRAY)
@@ -189,10 +192,13 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
 
                                         if ratio > 0.15:
                                             val = "Large_Transeverse_Crack"
+                                            tc_qual = 1
                                         if ratio < 0.15 and ratio > 0.06:
                                             val = "Medium_Transverse_Crack"
+                                            tc_qual = 2
                                         if ratio<0.06:
                                             val = "Small_Transeverse_Crack"  
+                                            tc_qual = 3
 
                                 if int(classes_len[counter])==3:
                                         img_r_1 = cv2.cvtColor(img_sh, cv2.COLOR_BGR2GRAY)
@@ -208,10 +214,13 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
 
                                         if ratio > 0.05:
                                             val =  "Large_Aligator_crack"
+                                            ac_qual = 1
                                         if ratio < 0.05 and ratio > 0.008:
                                             val = "Medium_Aligator_crack"
+                                            ac_qual = 2
                                         if ratio<0.008:
                                             val = "Small_Aligator_crack"  
+                                            ac_qual = 3
 
 
                                 if int(classes_len[counter])==4:
@@ -228,10 +237,13 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
 
                                         if ratio > 0.05:
                                             val = "Large_Pothole"
+                                            ph_qual = 1
                                         if ratio < 0.05 and ratio > 0.008:
                                             val = "Medium_Pothole"
+                                            ph_qual = 2
                                         if ratio<0.008:      
                                             val = "Small_Pothole"
+                                            ph_qual = 3
                             except:
                                 continue
 
@@ -244,6 +256,53 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
 
                 meta_data = [image_path,total, Severity]
 
-                print(meta_data)
+                issues = []
+                tot_qual = 0
+                if longitudinal > 0:
+                    lc = {
+                        'issue_id': 'Longitudinal_crack',
+                        'count': longitudinal,
+                        'quality': lc_qual
+                    }
+                    issues.append(lc)
+                    tot_qual += lc_qual
+                # if transverse > 0:
+                #     tc = {
+                #         'issue_id': 'Transverse_crack',
+                #         'count': transverse,
+                #         'quality': tc_qual
+                #     }
+                #     issues.append(tc)
+                if aligator > 0:
+                    ac = {
+                        'issue_id': 'Aligator_crack',
+                        'count': aligator,
+                        'quality': ac_qual
+                    }
+                    issues.append(ac)
+                    tot_qual += ac_qual
+                if pothole > 0:
+                    ph = {
+                        'issue_id': 'Pothole',
+                        'count': pothole,
+                        'quality': ph_qual
+                    }
+                    issues.append(ph)
+                    tot_qual += ph_qual
+
+                # print(meta_data)
+                # print(issues)
+
+                if len(issues) == 0:
+                    image_qual = 5
+                else:
+                    image_qual = tot_qual//len(issues)
+                result = {
+                    'image': image_np,
+                    'quality': image_qual,
+                    'issues': issues
+                }
+                print(result)
+                # return result
 
 detectObjectFromPathList(TEST_IMAGE_PATHS)
