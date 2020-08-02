@@ -31,7 +31,7 @@
                     <tr class="collapsible-row" data-target="#image{{ image.image_id }}" data-toggle="collapse" aria-expanded="true" aria-controls="image{{ image.image_id }}">
                         <td><i class="fas fa-chevron-down"></i></td>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ image.image_id }}</td>
+                        <td><a href="{{ image.image.url }}" target="_blank">{{ image.image_id }}</a></td>
                         <td>{{ image.issues.count }}</td>
                         <td>{{ image.get_quality_display }}</td>
                     </tr>
