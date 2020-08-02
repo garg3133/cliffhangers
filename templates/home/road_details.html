@@ -84,13 +84,13 @@
 {% block scripts %}
 <script>
     $(document).ready(function() {
-        $('.collapse').on('show.bs.collapse', function () {
+        $('#accordion .collapse').on('show.bs.collapse', function () {
             collapse_id = $(this)[0].id
             selector = '[data-target = "#' + collapse_id + '"] i'
             $(selector).removeClass('fa-chevron-down').addClass('fa-chevron-up');
         });
 
-        $('.collapse').on('hide.bs.collapse', function () {
+        $('#accordion .collapse').on('hide.bs.collapse', function () {
             collapse_id = $(this)[0].id
             selector = '[data-target = "#' + collapse_id + '"] i'
             $(selector).removeClass('fa-chevron-up').addClass('fa-chevron-down');
