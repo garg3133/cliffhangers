@@ -23,8 +23,13 @@
         {% endif %}
         
         {% if road.images.all %}
+        <div class="row justify-content-end">
+            <div class="col-md-4">
+                <input type="text" id="filter_images" class="form-control mb-3 mx-auto" onkeyup="filter_images()" placeholder="Search image id..">
+            </div>
+        </div>
         <div id="accordion">
-            <table class="table table-hover">
+            <table id="images_table" class="table table-hover">
                 <thead>
                     <tr>
                         <th></th>
@@ -102,6 +107,29 @@
         setTimeout(function(){
             location.reload()
         }, 5000)
+    }
+</script>
+<script>
+    function filter_images() {
+      // Declare variables
+      let input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("filter_images");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("images_table");
+      tr = table.querySelectorAll(".collapsible-row");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
     }
 </script>
 {% endblock %}
