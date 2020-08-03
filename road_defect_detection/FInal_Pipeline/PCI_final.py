@@ -30,7 +30,7 @@ PATH_TO_CKPT = MODEL_NAME + '/road.pb'
 PATH_TO_LABELS = os.path.join(MODEL_NAME, 'labelmap.pbtxt')
 NUM_CLASSES = 5
 
-threshold = 50
+threshold = 30
 
 # Path of image directory
 PATH_TO_TEST_IMAGES_DIR = "./images_test"
@@ -80,7 +80,9 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
                 transverse = 0
                 background = 0
                 aligator = 0
-                
+
+                ph_qual = lc_qual = tc_qual = ac_qual = 2
+
                 img_sh = cv2.imread(image_path)
                 height_img = img_sh.shape[0]
                 width_img = img_sh.shape[1]
@@ -89,8 +91,8 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
 
                 # the array based representation of the image will be used later in order to prepare the
                 # result image with boxes and labels on it.
-                # image_np = load_image_into_numpy_array(image)
-                image_np = cv2.imread(image_path, 1)
+                image_np = load_image_into_numpy_array(image)
+                # image_np = cv2.imread(image_path, 1)
                 # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
                 image_np_expanded = np.expand_dims(image_np, axis=0)
                 # Actual detection.
@@ -267,13 +269,13 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
                     }
                     issues.append(lc)
                     tot_qual += lc_qual
-                # if transverse > 0:
-                #     tc = {
-                #         'issue_id': 'Transverse_crack',
-                #         'count': transverse,
-                #         'quality': tc_qual
-                #     }
-                #     issues.append(tc)
+                if transverse > 0:
+                    tc = {
+                        'issue_id': 'Transverse_crack',
+                        'count': transverse,
+                        'quality': tc_qual
+                    }
+                    issues.append(tc)
                 if aligator > 0:
                     ac = {
                         'issue_id': 'Aligator_crack',
@@ -308,8 +310,8 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
 
 # detectObjectFromPathList(['./images_test\\1001.jpg', './images_test\\1002.jpg', './images_test\\1004.jpg'])
 
-CREATE_ROAD_URL = 'http://localhost:8000/api/create_road/'
-UPDATE_IMAGE_URL = 'http://localhost:8000/api/update_road_image/'
+CREATE_ROAD_URL = 'http://amanchande.co/api/create_road/'
+UPDATE_IMAGE_URL = 'http://amanchande.co/api/update_road_image/'
 
 PATH_TO_UNTESTED_ROAD_DIR = './road_images/untested/'
 
