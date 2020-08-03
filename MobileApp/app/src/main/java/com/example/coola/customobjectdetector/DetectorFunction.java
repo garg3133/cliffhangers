@@ -72,7 +72,6 @@ public class DetectorFunction {
 
     public Report processImage(Bitmap inputBitmap, boolean turnOnToastMsg) {
 
-//        Bitmap inputBitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
 
         Bitmap final_input_bitmap = RotateBitmap(inputBitmap, 90);
 
@@ -88,7 +87,7 @@ public class DetectorFunction {
         final Paint paint = new Paint();
         paint.setColor(Color.RED);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2.0f);
+        paint.setStrokeWidth(3.0f);
 
 
 
