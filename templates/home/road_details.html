@@ -58,14 +58,14 @@
                                         <th>SR No.</th>
                                         <th>Issue</th>
                                         <th>Count</th>
-                                        <th>Quality</th>
+                                        <!-- <th>Quality</th> -->
                                     </tr>
                                     {% for issue_detail in image.issues.all %}
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
                                         <td>{{ issue_detail.issue.name }}</td>
                                         <td>{{ issue_detail.count }}</td>
-                                        <td>{{ issue_detail.get_quality_display }}</td>
+                                        <!-- <td>{{ issue_detail.get_quality_display }}</td> -->
                                     </tr>
                                     {% endfor %}
                                 </table>
