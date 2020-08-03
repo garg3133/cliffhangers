@@ -171,13 +171,13 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
 
                                         if ratio > 0.1:
                                             val = "Large_Longitudinal_Crack"
-                                            lc_qual = 1
+                                            lc_qual = 2
                                         if ratio < 0.1 and ratio > 0.009:
                                             val = "Medium_Longitudinal_Crack"
-                                            lc_qual = 2
+                                            lc_qual = 3
                                         if ratio<0.009:
                                             val = "Small_Longitudinal_Crack"
-                                            lc_qual = 3
+                                            lc_qual = 4
 
                                 if int(classes_len[counter])==2:
                                         img_r_1 = cv2.cvtColor(img_sh, cv2.COLOR_BGR2GRAY)
@@ -193,13 +193,13 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
 
                                         if ratio > 0.15:
                                             val = "Large_Transeverse_Crack"
-                                            tc_qual = 1
+                                            tc_qual = 2
                                         if ratio < 0.15 and ratio > 0.06:
                                             val = "Medium_Transverse_Crack"
-                                            tc_qual = 2
+                                            tc_qual = 3
                                         if ratio<0.06:
                                             val = "Small_Transeverse_Crack"  
-                                            tc_qual = 3
+                                            tc_qual = 4
 
                                 if int(classes_len[counter])==3:
                                         img_r_1 = cv2.cvtColor(img_sh, cv2.COLOR_BGR2GRAY)
@@ -218,10 +218,10 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
                                             ac_qual = 1
                                         if ratio < 0.05 and ratio > 0.008:
                                             val = "Medium_Aligator_crack"
-                                            ac_qual = 2
+                                            ac_qual = 3
                                         if ratio<0.008:
                                             val = "Small_Aligator_crack"  
-                                            ac_qual = 3
+                                            ac_qual = 4
 
 
                                 if int(classes_len[counter])==4:
@@ -299,14 +299,14 @@ def detectObjectFromPathList(TEST_IMAGE_PATHS):
                 else:
                     image_qual = tot_qual//len(issues)
                 result = {
-                    'image': image_np,
+                    # 'image': image_np,
                     'quality': image_qual,
                     'issues': str(issues)
                 }
                 # print(result)
                 return result
 
-# detectObjectFromPathList(['./images_test\\1003.png', './images_test\\1003.png', './images_test\\1004.jpg'])
+# detectObjectFromPathList(['./images_test\\1001.jpg', './images_test\\1002.jpg', './images_test\\1004.jpg'])
 
 CREATE_ROAD_URL = 'http://localhost:8000/api/create_road/'
 UPDATE_IMAGE_URL = 'http://localhost:8000/api/update_road_image/'
@@ -339,14 +339,15 @@ for folder in os.listdir(PATH_TO_UNTESTED_ROAD_DIR):
 
     # Test Images
     for image in images_list:
-        IMAGE_PATH = glob.glob(os.path.join(IMAGES_PATH, image))
+        IMAGE_PATH = [os.path.join(IMAGES_PATH, image)]
 
         result = detectObjectFromPathList(IMAGE_PATH)
 
-        result_image = result['image']
+        # result_image = result['image']
 
-        result_image_path = os.path.join(RESULT_IMAGES_PATH, image)
-        matplotlib.image.imsave(result_image_path, result_image)
+        # result_image_path = os.path.join(RESULT_IMAGES_PATH, image)
+        result_image_path = os.path.join(IMAGES_PATH, image)
+        # matplotlib.image.imsave(result_image_path, result_image)
 
         files = {'image': open(result_image_path, 'rb')}
 
